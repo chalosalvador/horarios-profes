@@ -1,9 +1,9 @@
 import React from 'react';
-import { DatePicker } from 'antd';
+import ViewSchedulesPage from './ViewSchedulesPage';
 
 const HomePage = props => (
   <div>
-    <h1>Home</h1>
+    <ViewSchedulesPage />
   </div>
 );
 
