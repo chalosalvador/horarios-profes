@@ -4,4 +4,5 @@
 
 export const LOGIN = '/ingreso';
 export const HOME = '/';
+export const MANAGE_SCHEDULES = '/administrar-horarios';
 export const ABOUT = '/acerca-de';
