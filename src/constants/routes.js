@@ -4,5 +4,6 @@
 
 export const LOGIN = '/ingreso';
 export const HOME = '/';
-export const MANAGE_SCHEDULES = '/administrar-horarios';
+export const ADD_SCHEDULE = '/nuevo-horario';
+export const EDIT_SCHEDULE = '/editar-horario';
 export const ABOUT = '/acerca-de';

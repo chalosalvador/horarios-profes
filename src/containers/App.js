@@ -3,26 +3,14 @@ import Navigation from '../components/Navigation';
 import AppRouter from '../routers/AppRouter';
 import { connect } from 'react-redux';
 import { startSetLoginState } from '../actions/authActions';
-import { Icon, Layout } from 'antd';
+import { Layout } from 'antd';
 import '../styles/app.css';
 
 const {
-  Header, Content, Footer, Sider
+  Header, Content, Footer
 } = Layout;
 
 class App extends React.Component {
-
-  state = {
-    collapsed: false
-  };
-
-  // onCollapse = ( collapsed, type ) => { console.log( collapsed, type ); };
-
-  toggle = () => {
-    this.setState( {
-      collapsed: !this.state.collapsed
-    } );
-  };
 
   componentWillMount() {
     console.log( 'APP MOUNTED' );

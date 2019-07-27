@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as Teacher from '../firebase/teachers';
-import { Select, Table } from 'antd';
+import { Alert, Col, Divider, Row, Select, Table } from 'antd';
 
 const { Option } = Select;
 
@@ -9,11 +9,12 @@ class ViewSchedulesPage extends Component {
   teachersSchedules = {};
   teachersNamesOptions = [];
   state = {
-    schedulesData: []
+    schedulesData: [],
+    loadingTeachers: true
   };
 
   async componentDidMount() {
-    this.setState( { loadingClassRequests: true } );
+    this.setState( { loadingTeachers: true } );
 
     const teachersSnap = await Teacher.getTeachers();
 
@@ -21,12 +22,15 @@ class ViewSchedulesPage extends Component {
       const teacherData = teacherSnap.data();
       const teacherId = teacherSnap.id;
       this.teachersSchedules[ teacherId ] = {
-        name: `${teacherData.lastName} ${teacherData.firstName}`,
+        name: `${ teacherData.lastName } ${ teacherData.firstName }`,
         ...teacherData.schedule
       };
 
-      this.teachersNamesOptions.push( <Option key={ teacherId }>{ `${teacherData.lastName} ${teacherData.firstName}` }</Option> );
+      this.teachersNamesOptions.push(
+        <Option key={ teacherId }>{ `${ teacherData.lastName } ${ teacherData.firstName }` }</Option> );
     } );
+    this.setState( { loadingTeachers: false } );
+
     console.log( 'teachers', this.teachersSchedules );
   }
 
@@ -49,9 +53,10 @@ class ViewSchedulesPage extends Component {
         let daysByHour = {};
         days.forEach( ( day ) => {
           selectedTeachers.forEach( ( teacherId ) => {
-
-            daysByHour[ day ] = daysByHour[ day ]
-              ? true
+            console.log( 'daysByHour[ day ]', daysByHour[ day ] );
+            daysByHour[ day ] = daysByHour[ day ] !== undefined
+              ?
+              daysByHour[ day ] && this.teachersSchedules[ teacherId ][ day ][ hour ]
               : this.teachersSchedules[ teacherId ][ day ][ hour ];
           } );
 
@@ -73,12 +78,12 @@ class ViewSchedulesPage extends Component {
     const cellColorRender = ( data ) => data === true
       ? {
         props: {
-          style: { background: '#ff7875' }
+          style: { background: '#52c41a' }
         }
       }
       : {
         props: {
-          style: { background: '#ffffff' }
+          style: { background: '#fafafa' }
         }
       };
 
@@ -86,50 +91,97 @@ class ViewSchedulesPage extends Component {
       {
         title: 'Hora',
         dataIndex: 'hour',
-        key: 'hour'
+        key: 'hour',
+        width: 150
       },
       {
         title: 'Lunes',
         dataIndex: 'monday',
         key: 'monday',
-        render: cellColorRender
+        render: cellColorRender,
+        width: 200
       },
       {
         title: 'Martes',
         dataIndex: 'tuesday',
         key: 'tuesday',
-        render: cellColorRender
+        render: cellColorRender,
+        width: 200
       },
       {
         title: 'Miércoles',
         dataIndex: 'wednesday',
         key: 'wednesday',
-        render: cellColorRender
+        render: cellColorRender,
+        width: 200
       },
       {
         title: 'Jueves',
         dataIndex: 'thursday',
         key: 'thursday',
-        render: cellColorRender
+        render: cellColorRender,
+        width: 200
       },
       {
         title: 'Viernes',
         dataIndex: 'friday',
         key: 'friday',
-        render: cellColorRender
+        render: cellColorRender,
+        width: 200
       }
     ];
 
 
     return (
       <div className='view-schedules-page'>
-        <h1 className='view-schedules-page__title'>Ver horarios</h1>
 
-        <Select mode='multiple' style={ { width: '100%' } } placeholder='Please select' onChange={ this.handleChange }>
-          { this.teachersNamesOptions }
-        </Select>
+        <Row type='flex' justify='center'>
+          <Col span={ 20 }>
+            <h1>Seleccione los profesores:</h1>
+          </Col>
+        </Row>
 
-        <Table pagination={ false } columns={ columns } dataSource={ this.state.schedulesData } size={ 'small' } bordered />
+        <Row type='flex' justify='center'>
+          <Col span={ 12 } offset={ 1 }>
+            <Select
+              mode='multiple'
+              style={ { width: '100%' } }
+              size={ 'large' }
+              onChange={ this.handleChange }
+              loading={ this.state.loadingTeachers }
+              placeholder={ 'Seleccione o escriba los nombres de los profesores' }
+              showArrow={ true }
+              filterOption={ ( input, option ) =>
+                option.props.children.toLowerCase().indexOf( input.toLowerCase() ) >= 0
+              }
+            >
+              { this.teachersNamesOptions }
+            </Select>
+          </Col>
+        </Row>
+
+        <Divider />
+
+        <Row type='flex' justify='center'>
+          <Col span={ 12 }>
+            <Alert
+              message='Horas en que todos los profesores seleccionados están disponibles'
+              type='info'
+              showIcon
+              banner
+            />
+          </Col>
+        </Row>
+
+        <Row type='flex' justify='center'>
+          <Col span={ 20 }>
+            <Table pagination={ false }
+                   columns={ columns }
+                   dataSource={ this.state.schedulesData }
+                   size={ 'middle' }
+                   bordered />
+          </Col>
+        </Row>
 
       </div>
     );
