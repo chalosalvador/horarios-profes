@@ -1,0 +1,18 @@
+.schedule-form__table .ant-table td {
+    padding: 0 !important;
+}
+
+.schedule-form__switch {
+    min-width: 100%;
+    height: 40px;
+    border-radius: 0;
+    background-color: #fafafa;
+}
+
+.schedule-form__switch::after {
+    display: none;
+}
+
+.schedule-form__switch.ant-switch-checked {
+    background-color: #52c41a;
+}

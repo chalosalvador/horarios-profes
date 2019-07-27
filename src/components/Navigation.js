@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import LogoutButton from './LogoutButton';
 import '../styles/navigation.css';
-import { ABOUT, MANAGE_SCHEDULES } from '../constants/routes';
+import { ABOUT, ADD_SCHEDULE, EDIT_SCHEDULE } from '../constants/routes';
 
 const SubMenu = Menu.SubMenu;
 
@@ -53,28 +53,21 @@ class Navigation extends React.Component {
             <Link to='/'><Icon type='calendar' /> <span>Ver horarios</span></Link>
           </Menu.Item>
 
-          <Menu.Item key='manage'>
-            <Link to={ MANAGE_SCHEDULES }><Icon type='control' /> <span>Administrar horarios</span></Link>
+          <SubMenu key='manage' title={ <span><Icon type='control' /><span>Administrar horarios</span></span> }>
+            <Menu.Item key='new'>
+              <Link to={ ADD_SCHEDULE }><Icon type='user-add' style={ { fontSize: 20 } } />
+                <span>Añadir</span></Link>
+            </Menu.Item>
+
+            <Menu.Item key='edit'>
+              <Link to={ EDIT_SCHEDULE }><Icon type='edit' style={ { fontSize: 20 } } />
+                <span>Editar</span></Link>
+            </Menu.Item>
+          </SubMenu>
+
+          <Menu.Item key='about'>
+            <Link to={ ABOUT }><span><Icon type='question-circle' /><span>Acerca de...</span></span></Link>
           </Menu.Item>
-
-          {/*<SubMenu key='sub1' title={ <span><Icon type='mail' /><span>Navigation One</span></span> }>*/ }
-          {/*  <Menu.Item key='2'>Option 2</Menu.Item>*/ }
-          {/*  <Menu.Item key='3'>Option 3</Menu.Item>*/ }
-          {/*  <Menu.Item key='4'>Option 4</Menu.Item>*/ }
-          {/*</SubMenu>*/ }
-
-          {/*<SubMenu key='sub2' title={ <span><Icon type='appstore' /><span>Navigation Two</span></span> }>*/ }
-          {/*  <Menu.Item key='5'>Option 5</Menu.Item>*/ }
-          {/*  <Menu.Item key='6'>Option 6</Menu.Item>*/ }
-          {/*  <SubMenu key='sub3' title='Submenu'>*/ }
-          {/*    <Menu.Item key='7'>Option 7</Menu.Item>*/ }
-          {/*    <Menu.Item key='8'>Option 8</Menu.Item>*/ }
-          {/*  </SubMenu>*/ }
-          {/*</SubMenu>*/ }
-
-          {/*<Menu.Item key='about'>*/ }
-          {/*  <span><Icon type='question-circle' /><span><Link to={ ABOUT }>Acerca de...</Link></span></span>*/ }
-          {/*</Menu.Item>*/ }
 
           <Menu.Item key='logout'>
             <LogoutButton />
